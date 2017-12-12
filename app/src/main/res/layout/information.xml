@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp" />
         <TextView
+            android:id="@+id/nm"
             android:layout_marginTop="10sp"
             android:layout_marginRight="20sp"
             android:layout_alignParentRight="true"
@@ -41,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp" />
         <TextView
+            android:id="@+id/stu"
             android:layout_marginTop="10sp"
             android:layout_marginRight="20sp"
             android:layout_alignParentRight="true"
@@ -64,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp" />
         <TextView
+            android:id="@+id/gd"
             android:layout_marginTop="10sp"
             android:layout_marginRight="20sp"
             android:layout_alignParentRight="true"
@@ -87,6 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp" />
         <TextView
+            android:id="@+id/vc"
             android:layout_marginTop="10sp"
             android:layout_marginRight="20sp"
             android:layout_alignParentRight="true"
@@ -97,7 +101,7 @@
             android:layout_height="40dp" />
     </RelativeLayout>
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button1"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_width="match_parent"

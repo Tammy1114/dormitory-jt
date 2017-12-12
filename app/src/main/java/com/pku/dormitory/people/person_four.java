@@ -1,17 +1,19 @@
-package com.pku.dormitory;
+package com.pku.dormitory.people;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.pku.dormitory.R;
+
 /**
- * Created by Tammy on 2017/10/31.
+ * Created by Tammy on 2017/12/11.
  */
 
-public class MainActivity extends Activity{
+public class person_four extends Activity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
+
     }
 }
