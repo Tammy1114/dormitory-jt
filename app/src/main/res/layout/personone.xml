@@ -77,146 +77,32 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp" />
     </RelativeLayout>
-    <TextView
-        android:layout_marginTop="10dp"
-        android:text="剩余床位信息"
-        android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/fl1"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="15sp"
-            android:gravity="center_vertical"
-            android:text="5号楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <TextView
-            android:id="@+id/fl1n"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="20sp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:text="15个"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/fl2"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="15sp"
-            android:gravity="center_vertical"
-            android:text="13号楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <TextView
-            android:id="@+id/fl2n"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="20sp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:text="2个"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/listone"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/fl3"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="15sp"
-            android:gravity="center_vertical"
-            android:text="14号楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <TextView
-            android:id="@+id/fl3n"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="20sp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:text="3个"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-    </RelativeLayout>
-    <RelativeLayout
 
+    <LinearLayout
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp">
+
         <TextView
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="15sp"
+            android:id="@+id/building"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
             android:gravity="center_vertical"
-            android:text="8号楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <TextView
-            android:id="@+id/fl4n"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="20sp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        </RelativeLayout>
-    <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:background="@color/blue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="15sp"
-            android:gravity="center_vertical"
-            android:text="目标楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <TextView
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="120sp"
-            android:gravity="center_vertical"
-            android:text="13号楼"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
+            android:text="目标宿舍楼                   13号楼"
+            android:textSize="20dp"
+            android:textColor="#000000"/>
+
         <Spinner
             android:id="@+id/select"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-    </RelativeLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+        </Spinner>
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/button"

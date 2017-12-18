@@ -1,10 +1,15 @@
 package com.pku.dormitory.people;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +17,8 @@ import android.widget.Toast;
 import com.pku.dormitory.R;
 import com.pku.dormitory.Util.SslUtils;
 import com.pku.dormitory.bean.MyApplication;
+import com.pku.dormitory.person;
+import com.pku.dormitory.sucessful;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,20 +26,26 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tammy on 2017/12/11.
  */
 
-public class person_one extends Activity{
+public class person_one extends Activity implements View.OnClickListener{
     private static int a;
     private TextView nam;   //定义控件
     private TextView nu;
     private TextView genderTV,fl1n,fl2n,fl3n,fl4n;
-    private Spinner select;
-    //private ConfigUtil configUtil;
+    private Button btn;
+    private String select;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,28 +54,67 @@ public class person_one extends Activity{
         nu = (TextView) findViewById(R.id.xhTv);
         nam = (TextView) findViewById(R.id.nTv);
         genderTV = (TextView) findViewById(R.id.gdTv);
-        fl1n = (TextView) findViewById(R.id.fl1n);
-        fl2n = (TextView) findViewById(R.id.fl2n);
-        fl3n = (TextView) findViewById(R.id.fl3n);
-        fl4n = (TextView) findViewById(R.id.fl4n);
+        btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(this);
         String xh = ((MyApplication)getApplication()).getStudentid();
         String name = ((MyApplication)getApplication()).getName();
         String gender = ((MyApplication)getApplication()).getGender();
         nu.setText(xh);
         nam.setText(name);
         genderTV.setText(gender);
-        getbuilding(gender);
+        initViews();
 
 
     }
-    public void getbuilding(String gender) {
-        if(gender.equals("女")){
-             a = 2;
-        }else{
-             a = 1;
-        }
-        String data = "gender=" + a;
-        final String ip = "https://api.mysspku.com/index.php/V1/MobileCourse/getRoom?" + data;
+    void initViews() {
+        List<String> list = new ArrayList<String>();
+        list.add("5号楼");
+        list.add("8号楼");
+        list.add("13号楼");
+        list.add("14号楼");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        final Spinner sp = (Spinner) findViewById(R.id.select);
+        sp.setAdapter(adapter);
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            // parent： 为控件Spinner view：显示文字的TextView position：下拉选项的位置从0开始
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView tvResult = (TextView) findViewById(R.id.building);
+                //((MyApplication)getApplication()).setBuildnum(tvResult);
+                //获取Spinner控件的适配器
+                select = (String)sp.getSelectedItem();
+                ((MyApplication)getApplication()).setBuildnum(select);
+                ArrayAdapter<String> adapter = (ArrayAdapter<String>) parent.getAdapter();
+                tvResult.setText(adapter.getItem(position));
+
+            }
+            //没有选中时的处理
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        String xh = ((MyApplication)getApplication()).getStudentid();
+        //创建map类
+        Map<String,Object> params = new HashMap<String, Object>();
+        //获取人数
+        //
+        params.put("num",2);
+        params.put("stuid",xh);
+        ByPost(params, "utf-8");
+        //setContentView(R.layout.sucessful);
+       // bt = (Button) findViewById(R.id.btn);
+        //bt.setOnClickListener(this);
+//        Intent intent = new Intent(this, sucessful.class);//页面跳转
+//        startActivity(intent);//加载页面
+//        this.finish();//关闭此页面
+    }
+    public void ByPost(Map<String,Object> params,String encode){
+        final byte[] data = getRequestData(params, encode).toString().getBytes();//获得请求体
+        final String ip = "https://api.mysspku.com/index.php/V1/MobileCourse/SelectRoom";
         Log.d("activity_login", ip);
         new Thread(new Runnable() {
             @Override
@@ -71,30 +123,43 @@ public class person_one extends Activity{
                 try {
                     URL url = new URL(ip);
                     //信任所有证书
-                    if ("https".equalsIgnoreCase(url.getProtocol())) {
+                    if("https".equalsIgnoreCase(url.getProtocol())){
                         SslUtils.ignoreSsl();
                     }
                     //打开链接
                     conn = (HttpURLConnection) url.openConnection();
-                    //GET请求
-                    conn.setRequestMethod("GET");
+                    //POST请求
+                    conn.setRequestMethod("POST");
                     //设置属性
                     conn.setReadTimeout(8000);//读取数据超时时间
                     conn.setConnectTimeout(8000);//连接的超时时间
-
+                    //拼接处要提交的字符串
+                    // @SuppressWarnings("deprecation")
+                    //String data ="num"+b+"stuid"+ URLEncoder.encode(xh,"UTF-8")+"stu1id"+URLEncoder.encode(stu1,"UTF-8")+"v1code"+URLEncoder.encode(v1cd,"UTF-8")+"buildingNO"+i;
+                    //为post添加两行属性
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("Content-Length", String.valueOf(data.length));
+                    //因为post是通过流往服务器提交数据的，所以我们需要设置一个输出流
+                    //设置打开输出流
+                    conn.setDoOutput(true);
+                    //拿到输出流
+                    OutputStream os = conn.getOutputStream();
+                    //使用输出流向服务器提交数据
+                    os.write(data);
+                    os.flush();
                     InputStream is = conn.getInputStream();//字节流转换成字符串
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                     StringBuilder response = new StringBuilder();
                     String str;
                     while ((str = reader.readLine()) != null) {
                         response.append(str + "\n");
-                        Log.d("activity_login", str);
+                        Log.d("activity_login",str);
                     }
                     //获取字符串
-                    String responseStr = response.toString();
-                    Log.d("activity_login", responseStr);
-                    //解析JSON格式
-                    getJSON(responseStr);
+                    String responseStr1 = response.toString();
+                    Log.d("activity_login",responseStr1 );
+                    getReturn(responseStr1);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -105,46 +170,42 @@ public class person_one extends Activity{
                 }
             }
         }).start();
+    }
+    public static StringBuffer getRequestData(Map<String, Object>params,String encode){
+        StringBuffer stringBuffer = new StringBuffer();        //存储封装好的请求体信息
+        try {
+            for(Map.Entry<String,Object> entry : params.entrySet()) {
+                stringBuffer.append(entry.getKey())
+                        .append("=")
+                        .append(URLEncoder.encode((String) entry.getValue(), encode))
+                        .append("&");
+            }
+            stringBuffer.deleteCharAt(stringBuffer.length() - 1);    //删除最后的一个"&"
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stringBuffer;
 
     }
-
-    /**
-     * JSON解析方法
-     *
-     * @param build
-     */
-    private void getJSON(String build) {
+    private void getReturn(String data){
         try {
             //字符串转换为JSONObject对象
-            JSONObject a = new JSONObject(build);
+            JSONObject a = new JSONObject(data);
             String code = a.getString("errcode");
             if (code == "0") {//请求成功
-                //从jsonObject对象中取出来key是data的对象
-                JSONObject data = a.getJSONObject("data");
-                if (data != null) {
-                    //从data对象里取出
-                    String fl1 = data.getString("5");
-                    String fl2 = data.getString("13");
-                    String fl3 = data.getString("14");
-                    String fl4 = data.getString("8");
-                    fl1n.setText(fl1);
-                    fl2n.setText(fl2);
-                    fl3n.setText(fl3);
-                    fl4n.setText(fl4);
-
-                } else {
-                    Looper.prepare();
-                    Toast.makeText(this, "请求失败！", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
+                Intent intent = new Intent(this, sucessful.class);//页面跳转
+                startActivity(intent);//加载页面
+                this.finish();//关闭此页面
+            } else {
+                Looper.prepare();
+                Toast.makeText(this, "请求失败！", Toast.LENGTH_SHORT).show();
+                Looper.loop();
 
 
-                }
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }

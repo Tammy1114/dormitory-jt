@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.pku.dormitory.Util.ConfigUtil;
 import com.pku.dormitory.Util.SslUtils;
 import com.pku.dormitory.bean.MyApplication;
-import com.pku.dormitory.bean.User;
 
 import android.os.Looper;
 import android.text.TextUtils;
@@ -37,13 +35,13 @@ public class activity_login extends Activity implements View.OnClickListener {
     private EditText usernameTV;   //定义控件
     private EditText passwordTV;
     private Button log;
-    private ConfigUtil configUtil;
+    //private ConfigUtil configUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);//加载布局
-        configUtil = ConfigUtil.getConfigUtil(this);
+        //configUtil = ConfigUtil.getConfigUtil(this);
         initView();//调用一个方法
     }
     //获取数据的方法
@@ -153,10 +151,18 @@ public class activity_login extends Activity implements View.OnClickListener {
                 //configUtil.setusername(username+"");
                 String stu = usernameTV.getText().toString();
                 ((MyApplication)getApplication()).setStudentid(stu);//共享
-                Intent intent = new Intent(this, info.class);//页面跳转
-                intent.putExtra("username",username);
-                startActivity(intent);//加载页面
-                this.finish();//关闭此页面
+                int i = Integer.parseInt(stu);
+                if (i % 2 == 0) {
+                    Intent intent = new Intent(this, info.class);//页面跳转
+                    intent.putExtra("username", username);
+                    startActivity(intent);//加载页面
+                    this.finish();//关闭此页面
+                }else{
+                    Intent intent = new Intent(this, sucessful.class);//页面跳转
+                    intent.putExtra("username", username);
+                    startActivity(intent);//加载页面
+                    this.finish();//关闭此页面
+                }
              }else if (code.equals("40001")){//用户名或者密码错误
                 Looper.prepare();
                 Toast.makeText(activity_login.this, "学号不存在" , Toast.LENGTH_SHORT).show();

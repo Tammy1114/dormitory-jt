@@ -1,6 +1,7 @@
 package com.pku.dormitory.bean;
 
 import android.app.Application;
+import android.widget.TextView;
 
 /**
  * Created by Tammy on 2017/12/12.
@@ -79,4 +80,22 @@ public class MyApplication extends Application {
     private String building;
     private String location;
     private String grade;
+    private String buildnum;
+    private String No;
+
+    public String getNo() {
+        return No;
+    }
+
+    public void setNo(String no) {
+        No = no;
+    }
+
+    public String getBuildnum() {
+        return buildnum;
+    }
+
+    public void setBuildnum(String buildnum) {
+        this.buildnum = buildnum;
+    }
 }
