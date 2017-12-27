@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/welcome"
         android:scaleType="fitXY"
         android:src="@mipmap/welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <TextView
+       android:layout_centerHorizontal="true"
+        android:text="北大软微在线选宿舍系统"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp" />
 
-</LinearLayout>
+</RelativeLayout>

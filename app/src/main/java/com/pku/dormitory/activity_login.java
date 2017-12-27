@@ -152,7 +152,7 @@ public class activity_login extends Activity implements View.OnClickListener {
                 String stu = usernameTV.getText().toString();
                 ((MyApplication)getApplication()).setStudentid(stu);//共享
                 int i = Integer.parseInt(stu);
-                if (i % 2 == 0) {
+                if (i % 2 == 1) {
                     Intent intent = new Intent(this, info.class);//页面跳转
                     intent.putExtra("username", username);
                     startActivity(intent);//加载页面
@@ -160,6 +160,7 @@ public class activity_login extends Activity implements View.OnClickListener {
                 }else{
                     Intent intent = new Intent(this, sucessful.class);//页面跳转
                     intent.putExtra("username", username);
+                    ByGet(username);
                     startActivity(intent);//加载页面
                     this.finish();//关闭此页面
                 }
@@ -180,6 +181,93 @@ public class activity_login extends Activity implements View.OnClickListener {
                 Toast.makeText(activity_login.this, "请求失败！" , Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ByGet(String student) {
+
+        String data = "stuid=" + student;
+        final String ip = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?" + data;
+        Log.d("activity_login", ip);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(ip);
+                    //信任所有证书
+                    if ("https".equalsIgnoreCase(url.getProtocol())) {
+                        SslUtils.ignoreSsl();
+                    }
+                    //打开链接
+                    conn = (HttpURLConnection) url.openConnection();
+                    //GET请求
+                    conn.setRequestMethod("GET");
+                    //设置属性
+                    conn.setReadTimeout(8000);//读取数据超时时间
+                    conn.setConnectTimeout(8000);//连接的超时时间
+
+                    InputStream is = conn.getInputStream();//字节流转换成字符串
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                    StringBuilder response = new StringBuilder();
+                    String str;
+                    while ((str = reader.readLine()) != null) {
+                        response.append(str + "\n");
+                        Log.d("activity_login", str);
+                    }
+                    //获取字符串
+                    String responseStr = response.toString();
+                    Log.d("activity_login", responseStr);
+                    //解析JSON格式
+                    JSON(responseStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+
+                }
+            }
+        }).start();
+
+    }
+
+    /**
+     * JSON解析方法
+     *
+     * @param stuid
+     */
+    private void JSON(String stuid) {
+        try {
+            //字符串转换为JSONObject对象
+            JSONObject a = new JSONObject(stuid);
+            String code = a.getString("errcode");
+            if (code == "0") {//请求成功
+                //从jsonObject对象中取出来key是data的对象
+                JSONObject data = a.getJSONObject("data");
+                if (data != null) {
+                    //从data对象里取出
+                    String stu = data.getString("studentid");
+                    ((MyApplication)getApplication()).setStudentid(stu);
+                    String name = data.getString("name");
+                    ((MyApplication)getApplication()).setName(name);
+                    String gender = data.getString("gender");
+                    ((MyApplication)getApplication()).setGender(gender);
+                    ((MyApplication)getApplication()).setBuildnum("5");
+
+                } else {
+                    Looper.prepare();
+                    Toast.makeText(this, "请求失败！", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+
+
+                }
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

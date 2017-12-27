@@ -16,7 +16,6 @@ import com.pku.dormitory.people.person_four;
 import com.pku.dormitory.people.person_one;
 import com.pku.dormitory.people.person_three;
 import com.pku.dormitory.people.person_two;
-import com.pku.dormitory.people.personthree;
 
 import org.json.JSONException;
 import org.json.JSONObject;
